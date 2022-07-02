@@ -1,10 +1,9 @@
 const path = require('path');
 const express = require('express');
-
 const server = require('http');
-
 const socketio = require('socket.io');
 const Sockets = require('./sockets');
+const cors = require('cors');
 
 class Server {
   constructor() {
@@ -22,6 +21,7 @@ class Server {
 
   configurarSockets() {
     new Sockets(this.io);
+    this.app.use(cors());
   }
 
   execute() {
