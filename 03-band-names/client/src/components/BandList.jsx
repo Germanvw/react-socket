@@ -1,5 +1,23 @@
-export const BandList = () => {
-  const createRows = () => {};
+import { useEffect, useState } from 'react';
+
+export const BandList = ({ list, addVote, deleteBand, changeName }) => {
+  const [bands, setBands] = useState(list);
+
+  const handleName = (id, name) => {
+    const newList = bands.map((band) =>
+      band.id === id ? { ...band, name } : band
+    );
+    setBands(newList);
+  };
+
+  const handleOffFocus = (id, name) => {
+    changeName(id, name);
+  };
+
+  useEffect(() => {
+    setBands(list);
+  }, [list]);
+
   return (
     <>
       <table className='table table-stripped'>
@@ -12,20 +30,34 @@ export const BandList = () => {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>
-              <button className='btn btn-primary'>+1</button>
-            </td>
-            <td>
-              <input className='form-control' />
-            </td>
-            <td>
-              <h3>0</h3>
-            </td>
-            <td>
-              <button className='btn btn-danger'>Borrar</button>
-            </td>
-          </tr>
+          {bands.map(({ votes, name, id }) => (
+            <tr key={id}>
+              <td>
+                <button className='btn btn-primary' onClick={() => addVote(id)}>
+                  +1
+                </button>
+              </td>
+              <td>
+                <input
+                  className='form-control'
+                  value={name}
+                  onChange={({ target }) => handleName(id, target.value)}
+                  onBlur={() => handleOffFocus(id, name)}
+                />
+              </td>
+              <td>
+                <h3>{votes}</h3>
+              </td>
+              <td>
+                <button
+                  className='btn btn-danger'
+                  onClick={() => deleteBand(id)}
+                >
+                  Borrar
+                </button>
+              </td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </>

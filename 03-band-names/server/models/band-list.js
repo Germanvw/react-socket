@@ -20,15 +20,15 @@ class BandList {
   }
 
   addVotes(id) {
-    this.bands = this.bands.map((band) => {
-      band?.id === id ? band.votes++ : band;
-    });
+    this.bands = this.bands.map((band) =>
+      band?.id === id ? { ...band, votes: (band.votes += 1) } : band
+    );
   }
 
   changeName(id, newName) {
-    this.bands = this.bands.map((band) => {
-      band?.id === id ? (band.name = newName) : band;
-    });
+    this.bands = this.bands.map((band) =>
+      band?.id === id ? { ...band, name: newName } : band
+    );
   }
 }
 
