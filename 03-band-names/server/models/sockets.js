@@ -20,6 +20,8 @@ class Sockets {
 
       client.on('band-vote', (id) => {
         this.bandList.addVotes(id);
+        console.log(this.bandList.getBands());
+
         this.io.emit('band-list', this.bandList.getBands());
       });
 

@@ -1,12 +1,20 @@
+import { useContext } from 'react';
 import { useState } from 'react';
+import { SocketContext } from '../context/socketContext';
 
-export const BandAdd = ({ addBand }) => {
+export const BandAdd = () => {
   const [name, setName] = useState('');
+  const { socket } = useContext(SocketContext);
 
   const handleAdd = (e) => {
     e.preventDefault();
-    addBand(name);
+
+    if (name.trim().length > 0) {
+      socket.emit('band-add', name);
+      setName('');
+    }
   };
+
   return (
     <>
       <h3>Add Band</h3>
