@@ -24,10 +24,40 @@ export const routes = [
     icon: <UserOutlined />,
   },
   {
+    path: '/create',
+    name: 'Create Ticket',
+    Component: CreateTicket,
+    icon: <FileAddOutlined />,
+  },
+  {
     path: '/queue',
     name: 'Queue',
     Component: Queue,
     icon: <FieldTimeOutlined />,
+  },
+];
+
+export const privateRroutes = [
+  {
+    path: '/',
+    name: 'Home',
+    Component: HomePage,
+    icon: <HomeOutlined />,
+  },
+  {
+    path: '/queue',
+    name: 'Queue',
+    Component: Queue,
+    icon: <FieldTimeOutlined />,
+  },
+];
+
+export const publicRoutes = [
+  {
+    path: '/login',
+    name: 'Login',
+    Component: Login,
+    icon: <UserOutlined />,
   },
   {
     path: '/create',

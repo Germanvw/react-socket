@@ -1,27 +1,19 @@
 import { CloseCircleOutlined, RightOutlined } from '@ant-design/icons';
 import { Col, Row, Typography, Button, Divider } from 'antd';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useContext } from 'react';
+import { AuthContext } from '../context/authContext';
 import { getUsuario } from '../helpers/getUsuario';
 
 const { Title, Text } = Typography;
 
 export const HomePage = () => {
-  const navigate = useNavigate();
-
-  const [user] = useState({
-    office: getUsuario()?.office,
-    worker: getUsuario()?.worker,
-  });
+  const { dispatch } = useContext(AuthContext);
 
   const logout = () => {
-    localStorage.removeItem('worker');
-    localStorage.removeItem('office');
-    navigate('/login');
+    dispatch({ type: 'logout' });
   };
-  const nextTicket = () => {};
 
-  if (!user?.office || !user?.worker) navigate('/login');
+  const nextTicket = () => {};
 
   return (
     <>

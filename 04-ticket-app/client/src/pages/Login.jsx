@@ -1,36 +1,20 @@
 import { Button, Divider, Form, Input, InputNumber, Typography } from 'antd';
 import { SaveOutlined } from '@ant-design/icons';
-import { useNavigate } from 'react-router-dom';
-import { getUsuario } from '../helpers/getUsuario';
-import { useEffect, useState } from 'react';
+import { useContext } from 'react';
+import { AuthContext } from '../context/authContext';
 
 const { Title, Text } = Typography;
 
 export const Login = () => {
-  const navigate = useNavigate();
-
-  const [user] = useState({
-    office: getUsuario()?.office,
-    worker: getUsuario()?.worker,
-  });
+  const { dispatch } = useContext(AuthContext);
 
   const onFinish = ({ worker, office }) => {
-    console.log(worker, office);
-    localStorage.setItem('worker', worker);
-    localStorage.setItem('office', office);
-    navigate('/');
+    dispatch({ type: 'login', payload: { worker, office } });
   };
 
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
   };
-
-  useEffect(() => {
-    if (user?.office && user?.worker) navigate('/');
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
-
-  if (user?.office || user?.worker) <></>;
 
   return (
     <>

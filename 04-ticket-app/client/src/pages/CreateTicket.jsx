@@ -6,6 +6,7 @@ const { Title, Text } = Typography;
 
 export const CreateTicket = () => {
   const createTicket = () => {};
+
   return (
     <>
       <Row>

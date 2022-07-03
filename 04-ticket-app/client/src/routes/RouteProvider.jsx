@@ -1,10 +1,27 @@
 import { Layout, Menu } from 'antd';
-import { routes } from './routes';
+import { privateRroutes, publicRoutes, routes } from './routes';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import { PublicRoutes } from './PublicRoutes';
+import { PrivateRoutes } from './PrivateRoutes';
+import { useContext, useEffect } from 'react';
+import { AuthContext } from '../context/authContext';
+import { getUsuario } from '../helpers/getUsuario';
 
 const { Sider, Content } = Layout;
 
 export const RouteProvider = () => {
+  const { dispatch, worker } = useContext(AuthContext);
+
+  useEffect(() => {
+    if (getUsuario().worker) {
+      dispatch({
+        type: 'login',
+        payload: { worker: getUsuario().worker, office: getUsuario().office },
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <Router>
       <Layout style={{ height: '100vh' }}>
@@ -30,9 +47,16 @@ export const RouteProvider = () => {
             }}
           >
             <Routes>
-              {routes.map(({ path, Component }, i) => (
-                <Route key={i} path={path} element={<Component />} />
-              ))}
+              <Route element={<PublicRoutes user={worker} />}>
+                {publicRoutes.map(({ Component, path }) => (
+                  <Route key={path} path={path} element={<Component />} />
+                ))}
+              </Route>
+              <Route element={<PrivateRoutes user={worker} />}>
+                {privateRroutes.map(({ Component, path }) => (
+                  <Route key={path} path={path} element={<Component />} />
+                ))}
+              </Route>
             </Routes>
           </Content>
         </Layout>
