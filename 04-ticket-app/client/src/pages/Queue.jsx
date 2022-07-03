@@ -1,10 +1,18 @@
-import { DownloadOutlined } from '@ant-design/icons';
 import { Card, Col, Divider, List, Row, Tag, Typography } from 'antd';
-import { Button } from 'antd/lib/radio';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { getUsuario } from '../helpers/getUsuario';
 
 const { Title, Text } = Typography;
 
 export const Queue = () => {
+  const [user] = useState({
+    office: getUsuario()?.office,
+    worker: getUsuario()?.worker,
+  });
+
+  const navigate = useNavigate();
+
   const data = [
     {
       ticketNo: 33,
@@ -42,6 +50,8 @@ export const Queue = () => {
       agente: 'Carlos Castro',
     },
   ];
+
+  if (!user?.office || !user?.worker) navigate('/login');
   return (
     <>
       <Title level={1}>Attending Client: </Title>

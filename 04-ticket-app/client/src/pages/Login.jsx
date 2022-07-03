@@ -1,19 +1,36 @@
 import { Button, Divider, Form, Input, InputNumber, Typography } from 'antd';
 import { SaveOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
+import { getUsuario } from '../helpers/getUsuario';
+import { useEffect, useState } from 'react';
 
 const { Title, Text } = Typography;
 
 export const Login = () => {
   const navigate = useNavigate();
 
-  const onFinish = (values) => {
+  const [user] = useState({
+    office: getUsuario()?.office,
+    worker: getUsuario()?.worker,
+  });
+
+  const onFinish = ({ worker, office }) => {
+    console.log(worker, office);
+    localStorage.setItem('worker', worker);
+    localStorage.setItem('office', office);
     navigate('/');
   };
 
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
   };
+
+  useEffect(() => {
+    if (user?.office && user?.worker) navigate('/');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
+
+  if (user?.office || user?.worker) <></>;
 
   return (
     <>
@@ -50,7 +67,7 @@ export const Login = () => {
 
         <Form.Item
           label='Office'
-          name='Office'
+          name='office'
           rules={[
             {
               required: true,

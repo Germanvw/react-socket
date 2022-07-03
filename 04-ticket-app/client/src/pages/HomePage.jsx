@@ -1,19 +1,35 @@
 import { CloseCircleOutlined, RightOutlined } from '@ant-design/icons';
 import { Col, Row, Typography, Button, Divider } from 'antd';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { getUsuario } from '../helpers/getUsuario';
 
 const { Title, Text } = Typography;
 
 export const HomePage = () => {
-  const logout = () => {};
+  const navigate = useNavigate();
+
+  const [user] = useState({
+    office: getUsuario()?.office,
+    worker: getUsuario()?.worker,
+  });
+
+  const logout = () => {
+    localStorage.removeItem('worker');
+    localStorage.removeItem('office');
+    navigate('/login');
+  };
   const nextTicket = () => {};
+
+  if (!user?.office || !user?.worker) navigate('/login');
 
   return (
     <>
       <Row>
         <Col span={20}>
-          <Title level={2}>Nombre</Title>
+          <Title level={2}>{getUsuario()?.worker}</Title>
           <Text>Working at office: </Text>
-          <Text type='success'>2</Text>
+          <Text type='success'>{getUsuario()?.office}</Text>
         </Col>
         <Col span={4} align='right'>
           <Button shape='round' type='danger' onClick={logout}>
