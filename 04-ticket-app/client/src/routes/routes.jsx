@@ -59,6 +59,9 @@ export const publicRoutes = [
     Component: Login,
     icon: <UserOutlined />,
   },
+];
+
+export const globalRoutes = [
   {
     path: '/create',
     name: 'Create Ticket',

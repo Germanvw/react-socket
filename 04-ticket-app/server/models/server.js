@@ -19,28 +19,30 @@ class Server {
     this.io = socketio(this.server, {
       /* configuraciones */
     });
+
+    // Inicializar sockets
+    this.sockets = new Sockets(this.io);
   }
 
   middlewares() {
     // Desplegar el directorio público
     this.app.use(express.static(path.resolve(__dirname, '../public')));
 
-    // CORS
     this.app.use(cors());
-  }
 
-  // Esta configuración se puede tener aquí o como propieda de clase
-  // depende mucho de lo que necesites
-  configurarSockets() {
-    new Sockets(this.io);
+    // Get
+
+    this.app.get('/tickets', (req, res) => {
+      res.json({
+        ok: true,
+        list: this.sockets.ticketList.assignedList(13),
+      });
+    });
   }
 
   execute() {
     // Inicializar Middlewares
     this.middlewares();
-
-    // Inicializar sockets
-    this.configurarSockets();
 
     // Inicializar Server
     this.server.listen(this.port, () => {

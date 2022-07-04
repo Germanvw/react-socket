@@ -9,4 +9,4 @@ class Ticket {
   }
 }
 
-module.exports = Band;
+module.exports = Ticket;

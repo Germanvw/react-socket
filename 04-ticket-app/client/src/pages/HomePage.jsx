@@ -1,19 +1,28 @@
 import { CloseCircleOutlined, RightOutlined } from '@ant-design/icons';
 import { Col, Row, Typography, Button, Divider } from 'antd';
+import { useState } from 'react';
 import { useContext } from 'react';
 import { AuthContext } from '../context/authContext';
+import { SocketContext } from '../context/socketContext';
 import { getUsuario } from '../helpers/getUsuario';
 
 const { Title, Text } = Typography;
 
 export const HomePage = () => {
-  const { dispatch } = useContext(AuthContext);
+  const { worker, office, dispatch } = useContext(AuthContext);
+  const { socket } = useContext(SocketContext);
+
+  const [ticket, setTicket] = useState(null);
 
   const logout = () => {
     dispatch({ type: 'logout' });
   };
 
-  const nextTicket = () => {};
+  const nextTicket = () => {
+    socket.emit('next-ticket', { worker, office }, (ticket) => {
+      setTicket(ticket);
+    });
+  };
 
   return (
     <>
@@ -30,17 +39,19 @@ export const HomePage = () => {
         </Col>
       </Row>
       <Divider />
-      <Row>
-        <Col span={4}>
-          <Text>Attending ticket: </Text>
-          <Text style={{ fontSize: 30 }} type='danger'>
-            4
-          </Text>
-        </Col>
-      </Row>
+      {ticket && (
+        <Row>
+          <Col span={4}>
+            <Text>Attending ticket: </Text>
+            <Text style={{ fontSize: 30 }} type='danger'>
+              {ticket?.number}
+            </Text>
+          </Col>
+        </Row>
+      )}
       <Row>
         <Col offset={18} span={6} align='right'>
-          <Button onClick={nextTicket()} shape='round' type='primary'>
+          <Button onClick={() => nextTicket()} shape='round' type='primary'>
             <RightOutlined /> Next Ticket
           </Button>
         </Col>

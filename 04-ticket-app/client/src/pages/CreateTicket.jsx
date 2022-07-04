@@ -1,11 +1,22 @@
 import { DownloadOutlined } from '@ant-design/icons';
 import { Col, Row, Typography } from 'antd';
 import { Button } from 'antd/lib/radio';
+import { useState } from 'react';
+import { useContext } from 'react';
+import { SocketContext } from '../context/socketContext';
 
 const { Title, Text } = Typography;
 
 export const CreateTicket = () => {
-  const createTicket = () => {};
+  const { socket } = useContext(SocketContext);
+
+  const [ticket, setTicket] = useState(null);
+
+  const createTicket = () => {
+    socket.emit('create-ticket', null, (ticket) => {
+      setTicket(ticket);
+    });
+  };
 
   return (
     <>
@@ -23,15 +34,17 @@ export const CreateTicket = () => {
           </Button>
         </Col>
       </Row>
-      <Row style={{ marginTop: 100 }}>
-        <Col span={14} offset={6}>
-          <Text level={2}>Number</Text>
-          <br />
-          <Text type='success' style={{ fontSize: 55 }}>
-            55
-          </Text>
-        </Col>
-      </Row>
+      {ticket && (
+        <Row style={{ marginTop: 100 }}>
+          <Col span={14} offset={6}>
+            <Text level={2}>Number</Text>
+            <br />
+            <Text type='success' style={{ fontSize: 55 }}>
+              {ticket?.number}
+            </Text>
+          </Col>
+        </Row>
+      )}
     </>
   );
 };

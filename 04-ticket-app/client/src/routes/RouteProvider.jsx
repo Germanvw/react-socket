@@ -1,5 +1,5 @@
 import { Layout, Menu } from 'antd';
-import { privateRroutes, publicRoutes, routes } from './routes';
+import { globalRoutes, privateRroutes, publicRoutes, routes } from './routes';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import { PublicRoutes } from './PublicRoutes';
 import { PrivateRoutes } from './PrivateRoutes';
@@ -57,6 +57,9 @@ export const RouteProvider = () => {
                   <Route key={path} path={path} element={<Component />} />
                 ))}
               </Route>
+              {globalRoutes.map(({ Component, path }) => (
+                <Route key={path} path={path} element={<Component />} />
+              ))}
             </Routes>
           </Content>
         </Layout>
